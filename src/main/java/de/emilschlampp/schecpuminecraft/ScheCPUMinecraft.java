@@ -48,7 +48,13 @@ public final class ScheCPUMinecraft extends JavaPlugin {
             return;
         }
 
-        getCommand("schecpu").setExecutor(new ScheCPUCommand());
+        getCommand("schecpu").setExecutor(new ScheCPUCommand()
+                .register(new CPUExamplesCommand())
+                .register(new GetCodingBookCommand())
+                .register(new GetCPUBlockCommand())
+                .register(new GetCPUControlCommand())
+                .register(new ListCPUCommand())
+        );
 
         getServer().getPluginManager().registerEvents(new CPUMainListener(), this);
 

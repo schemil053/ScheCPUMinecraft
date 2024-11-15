@@ -2,26 +2,26 @@ package de.emilschlampp.schecpuminecraft.util;
 
 import de.emilschlampp.scheCPU.emulator.ProcessorEmulator;
 import de.emilschlampp.scheCPU.util.EmulatorSandboxRestrictions;
+import de.emilschlampp.scheCPU.util.FolderIOUtil;
 import de.emilschlampp.schecpuminecraft.compiler.CPUCompiler;
-import de.emilschlampp.schetty.folderCompress.FileSystem;
-import de.emilschlampp.schetty.folderCompress.FolderIOUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.RedstoneWire;
 import org.bukkit.material.Redstone;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 public class ProgramBlockData {
+    public static final int VERSION = 1;
     private String source;
     private byte[] compiled;
     private Location location;
     private ProcessorEmulator emulator;
-    private FileSystem fileSystem;
+    private File file;
     private String broadcastBuffer = "";
     private boolean forceLoaded = false;
     private CodeType codeType = CodeType.SCHESSEMBLER;
@@ -29,103 +29,110 @@ public class ProgramBlockData {
     public ProgramBlockData() {
     }
 
-    public ProgramBlockData(FileSystem fileSystem) {
-        this.fileSystem = fileSystem;
-        if (fileSystem.isFileNode("/source")) {
-            this.source = new String(fileSystem.getNode("/source").getContent(), StandardCharsets.UTF_8);
-        }
-        if (fileSystem.isFileNode("/compiled")) {
-            this.compiled = fileSystem.getNode("/compiled").getContent();
-        }
-        if (fileSystem.isFileNode("/state")) {
-            try {
-                this.emulator = new ProcessorEmulator(fileSystem.getNode("/state").getContent());
-            } catch (Throwable throwable) {
-                tryToCompileSource(false, false);
-            }
-        } else {
-            tryToCompileSource(false, false);
-        }
-        if (fileSystem.isFileNode("/broadcastBuffer")) {
-            try {
-                this.broadcastBuffer = FolderIOUtil.readString(fileSystem.getNode("/broadcastBuffer").openStream());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        if (fileSystem.isFileNode("/location")) {
-            InputStream in = fileSystem.getNode("/location").openStream();
-            try {
-                this.location = new Location(
-                        Bukkit.getWorld(FolderIOUtil.readString(in)),
-                        FolderIOUtil.readInt(in),
-                        FolderIOUtil.readInt(in),
-                        FolderIOUtil.readInt(in)
-                );
-            } catch (Throwable throwable) {
+    public ProgramBlockData(File file) {
+        this.file = file;
+        try(GZIPInputStream inputStream = new GZIPInputStream(new FileInputStream(file))) {
+            int version = FolderIOUtil.readInt(inputStream);
 
+            if(version == 1) {
+                if (FolderIOUtil.readBoolean(inputStream)) {
+                    this.source = new String(FolderIOUtil.readByteArray(inputStream), StandardCharsets.UTF_8);
+                }
+                if (FolderIOUtil.readBoolean(inputStream)) {
+                    this.compiled = FolderIOUtil.readByteArray(inputStream);
+                }
+                if (FolderIOUtil.readBoolean(inputStream)) {
+                    try {
+                        this.emulator = new ProcessorEmulator(FolderIOUtil.readByteArray(inputStream));
+                    } catch (Throwable throwable) {
+                        tryToCompileSource(false, false);
+                    }
+                } else {
+                    tryToCompileSource(false, false);
+                }
+                if (FolderIOUtil.readBoolean(inputStream)) {
+                    try {
+                        this.broadcastBuffer = FolderIOUtil.readString(inputStream);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                if (FolderIOUtil.readBoolean(inputStream)) {
+                    InputStream in = new ByteArrayInputStream(FolderIOUtil.readByteArray(inputStream));
+                    try {
+                        this.location = new Location(
+                                Bukkit.getWorld(FolderIOUtil.readString(in)),
+                                FolderIOUtil.readInt(in),
+                                FolderIOUtil.readInt(in),
+                                FolderIOUtil.readInt(in)
+                        );
+                    } catch (Throwable throwable) {
+
+                    }
+                }
+                this.forceLoaded = FolderIOUtil.readBoolean(inputStream);
+                if (FolderIOUtil.readBoolean(inputStream)) {
+                    this.codeType = CodeType.valueOf(FolderIOUtil.readString(inputStream));
+                }
             }
-        }
-        if (fileSystem.isFileNode("/forceload")) {
-            this.forceLoaded = true;
-        }
-        if (fileSystem.isFileNode("/codetype")) {
-            this.codeType = CodeType.valueOf(fileSystem.getNode("/codetype").openScanner().nextLine());
+        } catch (Throwable throwable) {
+            throw new RuntimeException(throwable);
         }
     }
 
     public void save() {
-        if (this.fileSystem == null) {
+        if (this.file == null) {
             return;
         }
-        if (this.source == null) {
-            this.fileSystem.getOrCreateFileNode("/source").delete();
-        } else {
-            this.fileSystem.getOrCreateFileNode("/source").setContent(this.source.getBytes(StandardCharsets.UTF_8));
-        }
-        if (this.compiled == null) {
-            this.fileSystem.getOrCreateFileNode("/compiled").delete();
-        } else {
-            this.fileSystem.getOrCreateFileNode("/compiled").setContent(this.compiled);
-        }
-        if (this.emulator == null) {
-            this.fileSystem.getOrCreateFileNode("/state").delete();
-        } else {
-            this.fileSystem.getOrCreateFileNode("/state").setContent(this.emulator.saveState());
-        }
-        this.fileSystem.getOrCreateFileNode("/broadcastBuffer").delete();
-        if (this.broadcastBuffer != null) {
-            try {
-                FolderIOUtil.writeString(this.fileSystem.getOrCreateFileNode("/broadcastBuffer").openWriter().asStream(), this.broadcastBuffer);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+        try (GZIPOutputStream outputStream = new GZIPOutputStream(new FileOutputStream(file))) {
+            FolderIOUtil.writeInt(outputStream, VERSION);
+            FolderIOUtil.writeBoolean(outputStream, this.source != null);
+            if (this.source != null) {
+                FolderIOUtil.writeByteArray(outputStream, this.source.getBytes(StandardCharsets.UTF_8));
             }
-        }
-        this.fileSystem.getOrCreateFileNode("/location").delete();
-        if (this.location != null) {
-            OutputStream out = this.fileSystem.getOrCreateFileNode("/location").openWriter().asStream();
-            try {
-                FolderIOUtil.writeString(out, this.location.getWorld().getName());
-                FolderIOUtil.writeInt(out, this.location.getBlockX());
-                FolderIOUtil.writeInt(out, this.location.getBlockY());
-                FolderIOUtil.writeInt(out, this.location.getBlockZ());
-            } catch (Throwable throwable) {
 
+            FolderIOUtil.writeBoolean(outputStream, this.compiled != null);
+            if (this.compiled != null) {
+                FolderIOUtil.writeByteArray(outputStream, this.compiled);
             }
-        }
-        if (this.forceLoaded) {
-            this.fileSystem.getOrCreateFileNode("/forceload");
-        } else {
-            this.fileSystem.getOrCreateFileNode("/forceload").delete();
-        }
-        if (this.codeType != null) {
-            this.fileSystem.getOrCreateFileNode("/codetype").delete();
-            this.fileSystem.getOrCreateFileNode("/codetype").openWriter().println(this.codeType.name());
-        } else {
-            this.fileSystem.getOrCreateFileNode("/codetype").delete();
-        }
 
-        this.fileSystem.saveAll();
+            FolderIOUtil.writeBoolean(outputStream, this.emulator != null);
+            if (this.emulator != null) {
+                FolderIOUtil.writeByteArray(outputStream, this.emulator.saveState());
+            }
+
+            FolderIOUtil.writeBoolean(outputStream, this.broadcastBuffer != null);
+            if (this.broadcastBuffer != null) {
+                try {
+                    FolderIOUtil.writeString(outputStream, this.broadcastBuffer);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            FolderIOUtil.writeBoolean(outputStream, this.location != null);
+            if (this.location != null) {
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                try {
+                    FolderIOUtil.writeString(out, this.location.getWorld().getName());
+                    FolderIOUtil.writeInt(out, this.location.getBlockX());
+                    FolderIOUtil.writeInt(out, this.location.getBlockY());
+                    FolderIOUtil.writeInt(out, this.location.getBlockZ());
+                } catch (Throwable throwable) {
+
+                }
+                FolderIOUtil.writeByteArray(outputStream, out.toByteArray());
+            }
+
+            FolderIOUtil.writeBoolean(outputStream, this.forceLoaded);
+
+            FolderIOUtil.writeBoolean(outputStream, this.codeType != null);
+            if (this.codeType != null) {
+                FolderIOUtil.writeString(outputStream, this.codeType.name());
+            }
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
     }
 
 
@@ -288,12 +295,12 @@ public class ProgramBlockData {
         return false;
     }
 
-    public FileSystem getFileSystem() {
-        return fileSystem;
+    public File getFile() {
+        return file;
     }
 
-    public ProgramBlockData setFileSystem(FileSystem fileSystem) {
-        this.fileSystem = fileSystem;
+    public ProgramBlockData setFile(File file) {
+        this.file = file;
         return this;
     }
 
