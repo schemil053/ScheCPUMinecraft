@@ -45,9 +45,8 @@
       <url>https://oss.sonatype.org/content/groups/public/</url>
     </repository>
     <repository>
-      <id>emilschlampp-repo</id>
-      <name>Private Repo</name>
-      <url>https://maven.emilschlampp.de/repo</url>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
     </repository>
   </repositories>
   <dependencies>

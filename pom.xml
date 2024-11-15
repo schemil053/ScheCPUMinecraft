@@ -59,9 +59,8 @@
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
         <repository>
-            <id>emilschlampp-repo</id>
-            <name>Private Repo</name>
-            <url>https://maven.emilschlampp.de/repo</url>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 
@@ -73,10 +72,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>de.emilschlampp</groupId>
+            <groupId>com.github.schemil053</groupId>
             <artifactId>ScheCPUEmulator</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
+            <version>90a4bed</version>
         </dependency>
     </dependencies>
 </project>
