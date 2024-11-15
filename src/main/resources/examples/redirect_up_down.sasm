@@ -1,0 +1,28 @@
+; Write your code here
+OUTW 3 1 ; SLEEP on
+OUTW 142 0 ; Input
+OUTW 140 1 ; Output
+OUTW 129 5 ; Multi 5
+OUTW 128 1 ; Multi on
+FUNC loop
+
+;OUTW 4 10 ; sleep
+
+INWR 143 BOOL
+CZJMP skip
+
+OUTW 141 1
+
+FUNC skip
+
+
+INWR 143 BOOL
+CJMP sks
+OUTW 141 0
+;OUTW 130 46 ; .
+FUNC sks
+
+
+
+; OUTW 4 10 ; Sleep
+JMP loop

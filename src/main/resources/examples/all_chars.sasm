@@ -1,0 +1,19 @@
+; Write your code here
+OUTW 129 10
+OUTW 128 1
+STOREMEM 0 254
+FUNC loop
+CMPM A 0
+CZJMP reset
+
+FUNC resetd
+
+ADD A 1
+OUTWR 130 A ; character
+OUTW 130 10 ; newline
+JMP loop
+FUNC reset
+
+LOAD A 0
+
+JMP resetd

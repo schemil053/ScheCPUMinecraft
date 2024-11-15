@@ -1,0 +1,29 @@
+; Write your code here
+OUTW 3 1 ; SLEEP on
+OUTW 140 0 ; Input
+
+FUNC loop
+
+OUTW 4 10
+
+INWR 141 BOOL
+CZJMP skip
+
+OUTW 130 45
+OUTW 130 10 ; newline
+
+FUNC skip
+
+
+
+
+
+
+
+
+
+
+
+
+OUTW 4 10
+JMP loop

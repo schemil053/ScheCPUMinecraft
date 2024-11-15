@@ -1,0 +1,8 @@
+Blink~/examples/blink.sasm
+Hello World!~/examples/hello_world.sasm
+Redirect Down -> Up~/examples/redirect_down_up.sasm
+Redirect Up -> Down~/examples/redirect_up_down.sasm
+Hi-Spam~/examples/hi_spam.sasm
+Down-Input-Test~/examples/down_input_test.sasm
+All Chars~/examples/all_chars.sasm
+Toggleable Clock~/examples/toggleable_clock.sasm

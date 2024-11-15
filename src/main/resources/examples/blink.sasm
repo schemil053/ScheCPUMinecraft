@@ -1,0 +1,13 @@
+; Write your code here
+OUTW 3 1 ; SLEEP on
+OUTW 140 1 ; Output
+
+FUNC loop
+
+OUTW 4 20 ; Sleep 20 Ticks
+
+OUTW 141 1
+OUTW 4 20 ; Sleep 20 Ticks
+OUTW 141 0
+
+JMP loop

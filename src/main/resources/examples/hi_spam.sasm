@@ -1,0 +1,9 @@
+; Write your code here
+OUTW 129 5
+OUTW 128 1 ;Multi-Exec
+
+FUNC loop
+OUTW 130 72 ; H
+OUTW 130 105 ; i
+OUTW 130 10 ; newline
+JMP loop
