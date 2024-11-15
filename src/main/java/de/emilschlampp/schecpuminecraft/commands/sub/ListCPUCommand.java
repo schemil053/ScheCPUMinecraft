@@ -1,6 +1,7 @@
-package de.emilschlampp.schecpuminecraft.commands;
+package de.emilschlampp.schecpuminecraft.commands.sub;
 
 import de.emilschlampp.schecpuminecraft.ScheCPUMinecraft;
+import de.emilschlampp.schecpuminecraft.commands.SubCommand;
 import de.emilschlampp.schecpuminecraft.schemilapi.inventory.ItemBuilder;
 import de.emilschlampp.schecpuminecraft.schemilapi.inventory.pager.Button;
 import de.emilschlampp.schecpuminecraft.schemilapi.inventory.pager.PagedPane;
@@ -13,11 +14,11 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class ListCPUCommand implements TabExecutor {
+public class ListCPUCommand implements SubCommand {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(!(sender instanceof Player)) {
-            return true;
+    public void exec(CommandSender sender, String[] args) {
+        if(!isPlayer(sender)) {
+            return;
         }
         String mode;
 
@@ -55,12 +56,16 @@ public class ListCPUCommand implements TabExecutor {
             }
         }));
 
-        pagedPane.open(((Player) sender));
-        return true;
+        pagedPane.open(toPlayer(sender));
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+    public List<String> tab(CommandSender sender, String[] args) {
         return List.of("all", "world", "world_permaload", "all_permaload");
+    }
+
+    @Override
+    public String getName() {
+        return "listcpu";
     }
 }

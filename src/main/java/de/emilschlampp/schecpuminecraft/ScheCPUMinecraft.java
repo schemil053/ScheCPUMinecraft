@@ -4,15 +4,14 @@ import de.emilschlampp.scheCPU.compile.Compiler;
 import de.emilschlampp.scheCPU.dissassembler.Decompiler;
 import de.emilschlampp.scheCPU.emulator.Instruction;
 import de.emilschlampp.scheCPU.emulator.ProcessorEmulator;
-import de.emilschlampp.schecpuminecraft.commands.*;
+import de.emilschlampp.schecpuminecraft.commands.ScheCPUCommand;
+import de.emilschlampp.schecpuminecraft.commands.sub.*;
 import de.emilschlampp.schecpuminecraft.listener.CPUMainListener;
 import de.emilschlampp.schecpuminecraft.schemilapi.APIHolder;
-import de.emilschlampp.schecpuminecraft.schemilapi.inventory.ItemBuilder;
 import de.emilschlampp.schecpuminecraft.schemilapi.util.ModuleType;
 import de.emilschlampp.schecpuminecraft.tasks.CPURunnable;
 import de.emilschlampp.schecpuminecraft.util.*;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -49,11 +48,7 @@ public final class ScheCPUMinecraft extends JavaPlugin {
             return;
         }
 
-        getCommand("getcodingbook").setExecutor(new GetCodingBookCommand());
-        getCommand("getcpu").setExecutor(new GetCPUBlockCommand());
-        getCommand("getcpucontrol").setExecutor(new GetCPUControlCommand());
-        getCommand("listcpu").setExecutor(new ListCPUCommand());
-        getCommand("cpuexamples").setExecutor(new CPUExamplesCommand());
+        getCommand("schecpu").setExecutor(new ScheCPUCommand());
 
         getServer().getPluginManager().registerEvents(new CPUMainListener(), this);
 

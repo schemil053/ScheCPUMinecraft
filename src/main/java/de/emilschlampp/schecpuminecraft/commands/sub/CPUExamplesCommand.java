@@ -1,5 +1,6 @@
-package de.emilschlampp.schecpuminecraft.commands;
+package de.emilschlampp.schecpuminecraft.commands.sub;
 
+import de.emilschlampp.schecpuminecraft.commands.SubCommand;
 import de.emilschlampp.schecpuminecraft.schemilapi.inventory.ItemBuilder;
 import de.emilschlampp.schecpuminecraft.schemilapi.inventory.pager.Button;
 import de.emilschlampp.schecpuminecraft.schemilapi.inventory.pager.PagedPane;
@@ -14,13 +15,13 @@ import java.util.Scanner;
 
 import static de.emilschlampp.schecpuminecraft.listener.CPUMainListener.getBookContent;
 
-public class CPUExamplesCommand implements TabExecutor {
+public class CPUExamplesCommand implements SubCommand {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(!(sender instanceof Player)) {
-            return true;
+    public void exec(CommandSender sender, String[] args) {
+        if(!isPlayer(sender)) {
+            return;
         }
-        Player player = ((Player) sender);
+        Player player = toPlayer(sender);
 
         PagedPane pagedPane = new PagedPane("§cBeispiele");
 
@@ -56,12 +57,15 @@ public class CPUExamplesCommand implements TabExecutor {
         }
 
         pagedPane.open(player);
-
-        return true;
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+    public List<String> tab(CommandSender sender, String[] args) {
         return List.of();
+    }
+
+    @Override
+    public String getName() {
+        return "examples";
     }
 }

@@ -3,17 +3,18 @@ version: '${project.version}'
 main: de.emilschlampp.schecpuminecraft.ScheCPUMinecraft
 api-version: '1.20'
 commands:
-  getcodingbook:
-    permission: schecpuminecraft.command.getcodingbook
-  getcpu:
-    permission: schecpuminecraft.command.getcpu
-  getcpucontrol:
-    permission: schecpuminecraft.command.getcpucontrol
-  listcpu:
-    permission: schecpuminecraft.command.listcpu
-  cpuexamples:
-    permission: schecpuminecraft.command.cpuexamples
-
+  schecpu:
+    permission: schecpuminecraft.command.base
 permissions:
   schecpuminecraft.action.getbook:
+    default: op
+  schecpuminecraft.subcommand.examples:
+    default: op
+  schecpuminecraft.subcommand.getcodebook:
+    default: op
+  schecpuminecraft.subcommand.getcpublock:
+    default: op
+  schecpuminecraft.subcommand.getcpucontrol:
+    default: op
+  schecpuminecraft.subcommand.listcpu:
     default: op
