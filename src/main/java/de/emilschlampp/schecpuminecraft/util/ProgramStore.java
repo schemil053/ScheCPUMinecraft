@@ -1,10 +1,6 @@
 package de.emilschlampp.schecpuminecraft.util;
 
 import de.emilschlampp.schecpuminecraft.schemilapi.APIHolder;
-import de.emilschlampp.schetty.folderCompress.Disk;
-import de.emilschlampp.schetty.folderCompress.FileSystem;
-import de.emilschlampp.schetty.util.FileStreamHandler;
-import de.emilschlampp.schetty.util.GZipStreamHandler;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -48,9 +44,9 @@ public class ProgramStore {
 
         worldFolder.mkdirs();
         prgStore.get(world).forEach(((location, programBlockData) -> {
-            if(programBlockData.getFileSystem() == null) {
+            if(programBlockData.getFile() == null) {
                 File locFile = new File(worldFolder, location.getBlockX()+"_"+location.getBlockY()+"_"+location.getBlockZ()+".ed.gz");
-                programBlockData.setFileSystem(new FileSystem(new Disk(new GZipStreamHandler(new FileStreamHandler(locFile)))));
+                programBlockData.setFile(locFile);
             }
             programBlockData.save();
         }));
@@ -79,9 +75,7 @@ public class ProgramStore {
                 continue;
             }
             try {
-                FileSystem fileSystem = new FileSystem(new Disk(new GZipStreamHandler(new FileStreamHandler(file))));
-
-                ProgramBlockData data = new ProgramBlockData(fileSystem);
+                ProgramBlockData data = new ProgramBlockData(file);
 
                 if(data.getLocation() == null) {
                     String[] split = file.getName().split("_", 3);
