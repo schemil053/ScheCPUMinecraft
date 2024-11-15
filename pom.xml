@@ -49,24 +49,6 @@
         </resources>
     </build>
 
-    <profiles>
-        <profile>
-            <id>MCTest1-Linux</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-jar-plugin</artifactId>
-                        <version>2.3.1</version>
-                        <configuration>
-                            <outputDirectory>/home/schem/Dokumente/TestServer/1.20.4/plugins/</outputDirectory>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
     <repositories>
         <repository>
             <id>spigotmc-repo</id>
