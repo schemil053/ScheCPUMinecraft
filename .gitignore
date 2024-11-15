@@ -4,6 +4,9 @@ target/
 !**/src/test/**/target/
 run/
 
+### Debugging trigger files
+src/main/resources/debug
+
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml
