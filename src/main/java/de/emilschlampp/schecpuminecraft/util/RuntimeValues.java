@@ -16,6 +16,7 @@ public class RuntimeValues {
     public static boolean CPU$DISABLE_ON_ERROR = true;
     public static boolean CPU$PRINT_ERROR = false;
     public static boolean CPU$ALLOW_SYSOUT = false;
+    public static boolean PARTICLES = false;
 
     private static final Map<String, Object> defaults = new HashMap<>();
 

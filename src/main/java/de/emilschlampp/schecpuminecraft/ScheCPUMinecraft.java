@@ -9,6 +9,7 @@ import de.emilschlampp.schecpuminecraft.commands.sub.*;
 import de.emilschlampp.schecpuminecraft.listener.CPUMainListener;
 import de.emilschlampp.schecpuminecraft.schemilapi.APIHolder;
 import de.emilschlampp.schecpuminecraft.schemilapi.util.ModuleType;
+import de.emilschlampp.schecpuminecraft.tasks.CPUParticleRunnable;
 import de.emilschlampp.schecpuminecraft.tasks.CPURunnable;
 import de.emilschlampp.schecpuminecraft.util.*;
 import org.bukkit.Bukkit;
@@ -67,6 +68,9 @@ public final class ScheCPUMinecraft extends JavaPlugin {
         }
 
         new CPURunnable().runTaskTimer(this, 1, 1);
+        if(RuntimeValues.PARTICLES) {
+            new CPUParticleRunnable().runTaskTimerAsynchronously(this, 15, 15);
+        }
 
     }
 
