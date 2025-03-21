@@ -21,4 +21,4 @@ var r_up 142
 
 
 
-protect r_int_a
+protect variable r_int_a
