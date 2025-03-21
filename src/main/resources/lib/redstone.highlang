@@ -61,12 +61,14 @@ var r_int_a 1
 outvar redstone_port_arg r_int_a
 
 
-copy r_int_b redstone_value_arg
+copy r_int_b redstone_port_arg
 
 ; Offset
 add r_int_b 1
 outvar r_int_b redstone_value_arg
 endmethod
+
+
 
 
 ;
@@ -77,7 +79,7 @@ var r_int_a 3
 outvar redstone_port_arg r_int_a
 
 
-copy r_int_b redstone_value_arg
+copy r_int_b redstone_port_arg
 
 ; Offset
 add r_int_b 1

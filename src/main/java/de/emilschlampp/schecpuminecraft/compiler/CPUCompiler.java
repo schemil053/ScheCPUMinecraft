@@ -24,10 +24,8 @@ public class CPUCompiler {
         }
         if(type.equals(CodeType.HIGHLANG)) {
             return new HighProgramCompiler(new HighLangPreprocessor(code)
-                    .setPreprocessorEnvironment(new PreprocessorEnvironment().setFileInclusionWhiteList(true).setFileInclusionWhitelist(Arrays.asList("lib/redstone.highlang"))
-                            .setFileInputStreamCreator(s -> {
-                                return CPUCompiler.class.getResourceAsStream("/lib/"+s);
-                            }))
+                    .setPreprocessorEnvironment(new PreprocessorEnvironment().setFileInclusionWhiteList(true).setFileInclusionWhitelist(Arrays.asList("redstone"))
+                            .setFileInputStreamCreator(s -> CPUCompiler.class.getResourceAsStream("/lib/"+s+".highlang")))
                     .preprocess().getResult()).setCompileProcessor(new HighlangMCCompileProcessor()).setWarningOutput(s -> {}).toBytecode(); //TODO 27.09.2024 Warnings
         }
 
