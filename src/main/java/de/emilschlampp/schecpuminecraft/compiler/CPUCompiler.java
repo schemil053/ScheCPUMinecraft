@@ -3,17 +3,16 @@ package de.emilschlampp.schecpuminecraft.compiler;
 import de.emilschlampp.scheCPU.compile.Compiler;
 import de.emilschlampp.scheCPU.dissassembler.Decompiler;
 import de.emilschlampp.scheCPU.high.HighProgramCompiler;
+import de.emilschlampp.scheCPU.high.preprocessing.HighLangPreprocessor;
+import de.emilschlampp.scheCPU.high.preprocessing.PreprocessorEnvironment;
 import de.emilschlampp.scheCPU.high.processor.CompileContext;
 import de.emilschlampp.scheCPU.high.processor.CompileProcessor;
 import de.emilschlampp.schecpuminecraft.util.CodeType;
 import de.emilschlampp.schecpuminecraft.util.IOFace;
-import org.bukkit.Location;
-import org.bukkit.entity.Cod;
-import org.checkerframework.checker.units.qual.C;
 
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Locale;
-import java.util.Map;
 
 public class CPUCompiler {
     public static byte[] compile(CodeType type, String code) {
@@ -24,7 +23,10 @@ public class CPUCompiler {
             return Base64.getDecoder().decode(code.replace(" ", "").replace("\n", ""));
         }
         if(type.equals(CodeType.HIGHLANG)) {
-            return new HighProgramCompiler(code).setCompileProcessor(new HighlangMCCompileProcessor()).setWarningOutput(s -> {}).toBytecode(); //TODO 27.09.2024 Warnings
+            return new HighProgramCompiler(new HighLangPreprocessor(code)
+                    .setPreprocessorEnvironment(new PreprocessorEnvironment().setFileInclusionWhiteList(true).setFileInclusionWhitelist(Arrays.asList("redstone"))
+                            .setFileInputStreamCreator(s -> CPUCompiler.class.getResourceAsStream("/lib/"+s+".highlang")))
+                    .preprocess().getResult()).setCompileProcessor(new HighlangMCCompileProcessor()).setWarningOutput(s -> {}).toBytecode(); //TODO 27.09.2024 Warnings
         }
 
         return null;

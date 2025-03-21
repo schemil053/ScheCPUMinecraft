@@ -74,7 +74,15 @@
         <dependency>
             <groupId>com.github.schemil053</groupId>
             <artifactId>ScheCPUEmulator</artifactId>
-            <version>90a4bed</version>
+            <version>aa283e0127</version>
+        </dependency>
+
+        <!-- junit 5, unit test -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.10.2</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

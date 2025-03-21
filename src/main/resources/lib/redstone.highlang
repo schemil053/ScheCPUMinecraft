@@ -1,0 +1,100 @@
+; This library uses about 22 memory components
+
+; Internal
+reserve r_int_a 1
+reserve r_int_b 1
+reserve r_int_c 1
+
+
+; Static constants
+reserve r_c_up 1
+reserve r_c_down 1
+reserve r_c_east 1
+reserve r_c_west 1
+reserve r_c_north 1
+reserve r_c_south 1
+
+var r_c_up 142
+var r_c_down 140
+var r_c_east 144
+var r_c_west 146
+var r_c_north 148
+var r_c_south 150
+
+
+; Method args
+reserve redstone_port_arg 1
+reserve redstone_value_arg 1
+
+; Methods
+
+
+method clearBCBuffer
+var r_int_a 1
+out r_int_a 131
+endmethod
+
+
+
+; Sets the port in redstone_port_arg to digital input
+method setInputDigital
+; 0 = digital
+var r_int_a 0
+; Output to control
+outvar redstone_port_arg r_int_a
+endmethod
+
+; Sets the port in redstone_port_arg to analogue input
+method setInputAnalog
+; 2 = analog
+var r_int_a 2
+; Output to control
+outvar redstone_port_arg r_int_a
+endmethod
+
+
+;
+method outputDigital
+; 1 = digital
+var r_int_a 1
+; Output to control
+outvar redstone_port_arg r_int_a
+
+
+copy r_int_b redstone_port_arg
+
+; Offset
+add r_int_b 1
+outvar r_int_b redstone_value_arg
+endmethod
+
+
+
+
+;
+method outputAnalogue
+; 3 = analog
+var r_int_a 3
+; Output to control
+outvar redstone_port_arg r_int_a
+
+
+copy r_int_b redstone_port_arg
+
+; Offset
+add r_int_b 1
+outvar r_int_b redstone_value_arg
+endmethod
+
+
+
+
+
+
+
+
+
+; Protect internal variables
+
+protect variable r_int_a
+protect variable r_int_b
