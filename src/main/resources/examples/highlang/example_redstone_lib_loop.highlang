@@ -1,0 +1,9 @@
+; Write your code here
+~include redstone.highlang
+
+copy redstone_port_arg r_c_up
+var redstone_value_arg 1
+
+asm FUNC loop
+callmethod outputDigital
+asm JMP loop
