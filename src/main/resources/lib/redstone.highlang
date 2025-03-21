@@ -1,0 +1,24 @@
+reserve r_int_a 10
+reserve redstone_in 1
+
+
+
+reserve r_up 1
+var r_up 142
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+protect r_int_a
