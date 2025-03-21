@@ -221,11 +221,11 @@ public class ProgramBlockData {
     private void updateIOIn() {
         if (location != null) {
             for (IOFace value : IOFace.values()) {
-                int downWire = emulator.getIo()[value.getIOConfigID()];
-                if (downWire == 0) {
+                int ioPortValue = emulator.getIo()[value.getIOConfigID()];
+                if (ioPortValue == 0) {
                     emulator.getIo()[value.getIOValueID()] = isActive(location.getBlock().getRelative(value.toBlockFace())) ? 1 : 0;
                 }
-                if (downWire == 2) {
+                if (ioPortValue == 2) {
                     emulator.getIo()[value.getIOValueID()] = getLevel(location.getBlock().getRelative(value.toBlockFace()));
                 }
             }
@@ -261,9 +261,9 @@ public class ProgramBlockData {
     }
 
     private void updateIOOut() {
-        if(emulator.getIo()[131] == 0) {
+        if(emulator.getIo()[131] != 0) {
             broadcastBuffer = "";
-            emulator.getIo()[131] = 1;
+            emulator.getIo()[131] = 0;
         }
         if (emulator.getIo()[130] != 0) {
             if (location != null) {
