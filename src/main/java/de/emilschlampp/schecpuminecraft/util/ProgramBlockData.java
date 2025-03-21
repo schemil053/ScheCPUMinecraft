@@ -1,6 +1,5 @@
 package de.emilschlampp.schecpuminecraft.util;
 
-import de.emilschlampp.scheCPU.dissassembler.Decompiler;
 import de.emilschlampp.scheCPU.emulator.ProcessorEmulator;
 import de.emilschlampp.scheCPU.util.EmulatorSandboxRestrictions;
 import de.emilschlampp.scheCPU.util.FolderIOUtil;
