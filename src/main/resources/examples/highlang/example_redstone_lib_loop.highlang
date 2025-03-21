@@ -1,5 +1,5 @@
 ; Write your code here
-~include redstone.highlang
+~include redstone
 
 copy redstone_port_arg r_c_up
 var redstone_value_arg 1
