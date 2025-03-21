@@ -74,7 +74,7 @@
         <dependency>
             <groupId>com.github.schemil053</groupId>
             <artifactId>ScheCPUEmulator</artifactId>
-            <version>0635601ee4</version>
+            <version>a6b960a97d</version>
         </dependency>
     </dependencies>
 </project>
