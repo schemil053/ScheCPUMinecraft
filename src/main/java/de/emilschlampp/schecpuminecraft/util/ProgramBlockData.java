@@ -320,7 +320,7 @@ public class ProgramBlockData {
     }
 
     public boolean isForceLoaded() {
-        return false;
+        return false; //TODO 22.03.2025 Add way to perma load cpus
     }
 
     public File getFile() {
