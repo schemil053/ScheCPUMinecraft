@@ -134,7 +134,7 @@ public class CPUMainListener implements Listener {
                 return;
             }
             SimpleGUI programGUI = new SimpleGUI("§cProgrammiersprache", 3);
-            programGUI.setButton(11, new SimpleButton((data.getCodeType() == CodeType.BASE64ASM ? "§a" : "§c")+"Base64 (Compiled Schessembler)", Material.SPYGLASS, inventoryClickEvent1 -> {
+            programGUI.setButton(11, new SimpleButton((data.getCodeType() == CodeType.BASE64ASM ? "§a" : "§c")+"Base64 (Compiled Schessembler)", Material.REDSTONE_LAMP, inventoryClickEvent1 -> {
                 data.setCodeType(CodeType.BASE64ASM);
 
                 ProgramBlockData fdata = programStore.getForBlock(event.getClickedBlock());
@@ -186,7 +186,7 @@ public class CPUMainListener implements Listener {
             }
 
 
-            hwGUI.setButton(13, new SimpleButton(InventoryUtil.createItem(Material.SCULK_SENSOR, "§6CPU-Kommunikation", "§aAktueller Kanal: "+fdata.getCommunicationChannel()), i2 -> {
+            hwGUI.setButton(13, new SimpleButton(InventoryUtil.createItem(Material.REPEATER, "§6CPU-Kommunikation", "§aAktueller Kanal: "+fdata.getCommunicationChannel()), i2 -> {
                 event.getPlayer().closeInventory();
                 ScheCPUMinecraft.getInstance().getPromptManager().prompt(event.getPlayer(), fdata::setCommunicationChannel);
             }));
