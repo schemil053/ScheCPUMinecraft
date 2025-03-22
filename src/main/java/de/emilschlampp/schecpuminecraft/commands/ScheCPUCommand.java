@@ -54,7 +54,7 @@ public class ScheCPUCommand implements TabExecutor {
                 }
             }
         }
-        return List.of();
+        return new ArrayList<>();
     }
 
     public List<SubCommand> getSubCommands() {

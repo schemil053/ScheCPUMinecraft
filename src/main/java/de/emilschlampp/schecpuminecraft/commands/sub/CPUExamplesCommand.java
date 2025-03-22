@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -61,7 +62,7 @@ public class CPUExamplesCommand implements SubCommand {
 
     @Override
     public List<String> tab(CommandSender sender, String[] args) {
-        return List.of();
+        return new ArrayList<>();
     }
 
     @Override

@@ -7,11 +7,10 @@ import de.emilschlampp.schecpuminecraft.schemilapi.inventory.pager.Button;
 import de.emilschlampp.schecpuminecraft.schemilapi.inventory.pager.PagedPane;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class ListCPUCommand implements SubCommand {
@@ -61,7 +60,7 @@ public class ListCPUCommand implements SubCommand {
 
     @Override
     public List<String> tab(CommandSender sender, String[] args) {
-        return List.of("all", "world", "world_permaload", "all_permaload");
+        return Arrays.asList("all", "world", "world_permaload", "all_permaload");
     }
 
     @Override
