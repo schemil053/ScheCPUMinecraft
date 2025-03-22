@@ -60,7 +60,6 @@ var r_int_a 1
 ; Output to control
 outvar redstone_port_arg r_int_a
 
-
 copy r_int_b redstone_port_arg
 
 ; Offset
@@ -78,7 +77,6 @@ var r_int_a 3
 ; Output to control
 outvar redstone_port_arg r_int_a
 
-
 copy r_int_b redstone_port_arg
 
 ; Offset
@@ -88,8 +86,12 @@ endmethod
 
 
 
-
-
+;
+method readRedstone
+copy r_int_b redstone_port_arg
+add r_int_b 1
+invar r_int_b redstone_value_arg
+endmethod
 
 
 

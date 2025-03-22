@@ -1,0 +1,10 @@
+; Write your code here
+~include redstone
+
+var port 160
+copy redstone_port_arg r_c_up
+asm FUNC loop
+
+invar port redstone_value_arg
+callmethod outputDigital
+asm JMP loop

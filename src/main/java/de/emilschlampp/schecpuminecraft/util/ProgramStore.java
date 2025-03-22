@@ -7,10 +7,13 @@ import org.bukkit.block.Block;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class ProgramStore {
     private final Map<World, Map<Location, ProgramBlockData>> prgStore = new HashMap<>();
+    private final ChannelStore channelStore = new ChannelStore(this);
 
     public void deleteCPU(Block block) {
         prgStore.getOrDefault(block.getWorld(), new HashMap<>()).remove(block.getLocation());
@@ -50,6 +53,20 @@ public class ProgramStore {
             }
             programBlockData.save();
         }));
+
+        channelStore.saveAll(world);
+    }
+
+    public Set<String> getUsedChannels(World world) {
+        Map<Location, ProgramBlockData> locationProgramBlockDataMap = prgStore.get(world);
+        if(locationProgramBlockDataMap == null) {
+            return new HashSet<>();
+        }
+        HashSet<String> strings = new HashSet<>();
+        for (ProgramBlockData value : locationProgramBlockDataMap.values()) {
+            strings.add(value.getCommunicationChannel());
+        }
+        return strings;
     }
 
     public void load(World world) {
@@ -90,6 +107,8 @@ public class ProgramStore {
                 System.out.println(file.getName());
             }
         }
+
+        channelStore.load(world);
     }
 
     public Map<World, Map<Location, ProgramBlockData>> getPrgStore() {
@@ -99,5 +118,9 @@ public class ProgramStore {
     public void unload(World world) {
         saveAll(world);
         prgStore.remove(world);
+    }
+
+    public ChannelStore getChannelStore() {
+        return channelStore;
     }
 }

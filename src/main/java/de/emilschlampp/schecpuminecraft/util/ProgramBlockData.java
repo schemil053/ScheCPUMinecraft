@@ -1,9 +1,9 @@
 package de.emilschlampp.schecpuminecraft.util;
 
-import de.emilschlampp.scheCPU.dissassembler.Decompiler;
 import de.emilschlampp.scheCPU.emulator.ProcessorEmulator;
 import de.emilschlampp.scheCPU.util.EmulatorSandboxRestrictions;
 import de.emilschlampp.scheCPU.util.FolderIOUtil;
+import de.emilschlampp.schecpuminecraft.ScheCPUMinecraft;
 import de.emilschlampp.schecpuminecraft.compiler.CPUCompiler;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -17,13 +17,14 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 public class ProgramBlockData {
-    public static final int VERSION = 1;
+    public static final int VERSION = 2;
     private String source;
     private byte[] compiled;
     private Location location;
     private ProcessorEmulator emulator;
     private File file;
     private String broadcastBuffer = "";
+    private String communicationChannel = "";
     private boolean forceLoaded = false;
     private CodeType codeType = CodeType.SCHESSEMBLER;
 
@@ -35,7 +36,7 @@ public class ProgramBlockData {
         try(GZIPInputStream inputStream = new GZIPInputStream(new FileInputStream(file))) {
             int version = FolderIOUtil.readInt(inputStream);
 
-            if(version == 1) {
+            if(version == 1 || version == 2) {
                 if (FolderIOUtil.readBoolean(inputStream)) {
                     this.source = new String(FolderIOUtil.readByteArray(inputStream), StandardCharsets.UTF_8);
                 }
@@ -74,6 +75,12 @@ public class ProgramBlockData {
                 this.forceLoaded = FolderIOUtil.readBoolean(inputStream);
                 if (FolderIOUtil.readBoolean(inputStream)) {
                     this.codeType = CodeType.valueOf(FolderIOUtil.readString(inputStream));
+                }
+
+                if(version == 2) {
+                    communicationChannel = FolderIOUtil.readString(inputStream);
+                } else {
+                    communicationChannel = "";
                 }
             }
         } catch (Throwable throwable) {
@@ -131,6 +138,8 @@ public class ProgramBlockData {
             if (this.codeType != null) {
                 FolderIOUtil.writeString(outputStream, this.codeType.name());
             }
+
+            FolderIOUtil.writeString(outputStream, communicationChannel);
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
@@ -230,6 +239,15 @@ public class ProgramBlockData {
                     emulator.getIo()[value.getIOValueID()] = getLevel(location.getBlock().getRelative(value.toBlockFace()));
                 }
             }
+
+            if(!communicationChannel.isEmpty()) {
+                ChannelData channelData = ScheCPUMinecraft.getInstance().getProgramStore().getChannelStore().get(getLocation().getWorld(), communicationChannel);
+
+                int[] data = channelData.getData();
+                int[] io = emulator.getIo();
+
+                System.arraycopy(data, 0, io, 160, data.length);
+            }
         }
     }
 
@@ -290,6 +308,15 @@ public class ProgramBlockData {
                 setState(location.getBlock().getRelative(value.toBlockFace()), emulator.getIo()[value.getIOValueID()]);
             }
         }
+
+        if(!communicationChannel.isEmpty()) {
+            ChannelData channelData = ScheCPUMinecraft.getInstance().getProgramStore().getChannelStore().get(getLocation().getWorld(), communicationChannel);
+
+            int[] data = channelData.getData();
+            int[] io = emulator.getIo();
+
+            System.arraycopy(io, 160, data, 0, data.length);
+        }
     }
 
     public boolean isForceLoaded() {
@@ -325,6 +352,15 @@ public class ProgramBlockData {
 
     public ProgramBlockData setBroadcastBuffer(String broadcastBuffer) {
         this.broadcastBuffer = broadcastBuffer;
+        return this;
+    }
+
+    public String getCommunicationChannel() {
+        return communicationChannel;
+    }
+
+    public ProgramBlockData setCommunicationChannel(String communicationChannel) {
+        this.communicationChannel = communicationChannel;
         return this;
     }
 }

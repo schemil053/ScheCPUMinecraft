@@ -6,3 +6,4 @@
 | 131     | Broadcast trigger (1 = reset)                                                        |
 | 140     | Redstone wire down mode (below) 0=read, 1=write, 2=readAnalog, 3=writeAnalog         |
 | 141     | Redstone wire down state (1-15) if Analog, 0 or 1 if digital                         |
+| 160-170 | Connected IOChannel                                                                  |
