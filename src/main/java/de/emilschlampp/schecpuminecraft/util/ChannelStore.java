@@ -47,7 +47,7 @@ public class ChannelStore {
         File worldsFolder = new File(APIHolder.folder, "worlds");
         worldsFolder.mkdirs();
 
-        File fw = new File(worldsFolder, world+".channeldata");
+        File fw = new File(worldsFolder, world.getName()+".channeldata");
         try {
             FileOutputStream fos = new FileOutputStream(fw);
 
@@ -76,7 +76,7 @@ public class ChannelStore {
         HashMap<String, ChannelData> value = new HashMap<>();
         channelData.put(world, value);
 
-        File fw = new File(worldsFolder, world+".channeldata");
+        File fw = new File(worldsFolder, world.getName()+".channeldata");
 
         if(!fw.isFile()) {
             return;
