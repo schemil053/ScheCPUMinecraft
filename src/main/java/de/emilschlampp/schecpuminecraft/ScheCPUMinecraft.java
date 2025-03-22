@@ -20,6 +20,7 @@ public final class ScheCPUMinecraft extends JavaPlugin {
     private static ScheCPUMinecraft instance;
 
     private ProgramStore programStore;
+    private PromptManager promptManager;
 
     @Override
     public void onLoad() {
@@ -49,6 +50,8 @@ public final class ScheCPUMinecraft extends JavaPlugin {
             return;
         }
 
+        promptManager = new PromptManager();
+
         getCommand("schecpu").setExecutor(new ScheCPUCommand()
                 .register(new CPUExamplesCommand())
                 .register(new GetCodingBookCommand())
@@ -58,6 +61,7 @@ public final class ScheCPUMinecraft extends JavaPlugin {
         );
 
         getServer().getPluginManager().registerEvents(new CPUMainListener(), this);
+        getServer().getPluginManager().registerEvents(promptManager, this);
 
         new DebugTest(this);
 
@@ -85,6 +89,10 @@ public final class ScheCPUMinecraft extends JavaPlugin {
 
     public ProgramStore getProgramStore() {
         return programStore;
+    }
+
+    public PromptManager getPromptManager() {
+        return promptManager;
     }
 
     public static ScheCPUMinecraft getInstance() {

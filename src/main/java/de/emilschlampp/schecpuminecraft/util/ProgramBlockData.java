@@ -16,13 +16,14 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 public class ProgramBlockData {
-    public static final int VERSION = 1;
+    public static final int VERSION = 2;
     private String source;
     private byte[] compiled;
     private Location location;
     private ProcessorEmulator emulator;
     private File file;
     private String broadcastBuffer = "";
+    private String communicationChannel = "";
     private boolean forceLoaded = false;
     private CodeType codeType = CodeType.SCHESSEMBLER;
 
@@ -34,7 +35,7 @@ public class ProgramBlockData {
         try(GZIPInputStream inputStream = new GZIPInputStream(new FileInputStream(file))) {
             int version = FolderIOUtil.readInt(inputStream);
 
-            if(version == 1) {
+            if(version == 1 || version == 2) {
                 if (FolderIOUtil.readBoolean(inputStream)) {
                     this.source = new String(FolderIOUtil.readByteArray(inputStream), StandardCharsets.UTF_8);
                 }
@@ -73,6 +74,12 @@ public class ProgramBlockData {
                 this.forceLoaded = FolderIOUtil.readBoolean(inputStream);
                 if (FolderIOUtil.readBoolean(inputStream)) {
                     this.codeType = CodeType.valueOf(FolderIOUtil.readString(inputStream));
+                }
+
+                if(version == 2) {
+                    communicationChannel = FolderIOUtil.readString(inputStream);
+                } else {
+                    communicationChannel = "";
                 }
             }
         } catch (Throwable throwable) {
@@ -130,6 +137,8 @@ public class ProgramBlockData {
             if (this.codeType != null) {
                 FolderIOUtil.writeString(outputStream, this.codeType.name());
             }
+
+            FolderIOUtil.writeString(outputStream, communicationChannel);
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
@@ -324,6 +333,15 @@ public class ProgramBlockData {
 
     public ProgramBlockData setBroadcastBuffer(String broadcastBuffer) {
         this.broadcastBuffer = broadcastBuffer;
+        return this;
+    }
+
+    public String getCommunicationChannel() {
+        return communicationChannel;
+    }
+
+    public ProgramBlockData setCommunicationChannel(String communicationChannel) {
+        this.communicationChannel = communicationChannel;
         return this;
     }
 }

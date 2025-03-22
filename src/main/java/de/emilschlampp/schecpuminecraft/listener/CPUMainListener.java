@@ -2,6 +2,7 @@ package de.emilschlampp.schecpuminecraft.listener;
 
 import de.emilschlampp.schecpuminecraft.ScheCPUMinecraft;
 import de.emilschlampp.schecpuminecraft.compiler.CPUCompiler;
+import de.emilschlampp.schecpuminecraft.schemilapi.inventory.InventoryUtil;
 import de.emilschlampp.schecpuminecraft.schemilapi.inventory.ItemBuilder;
 import de.emilschlampp.schecpuminecraft.schemilapi.inventory.simpleGUI.SimpleButton;
 import de.emilschlampp.schecpuminecraft.schemilapi.inventory.simpleGUI.SimpleGUI;
@@ -21,6 +22,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.meta.BookMeta;
 
 import java.util.*;
@@ -113,7 +115,7 @@ public class CPUMainListener implements Listener {
         }
 
         SimpleGUI gui = new SimpleGUI("§cSteuerung", 3);
-        gui.setButton(11, new SimpleButton("§cHerunterfahren ⏹", Material.RED_DYE, inventoryClickEvent -> {
+        gui.setButton(10, new SimpleButton("§cHerunterfahren ⏹", Material.RED_DYE, inventoryClickEvent -> {
             ProgramBlockData data = programStore.getForBlock(event.getClickedBlock());
             if(data == null) {
                 return;
@@ -126,7 +128,7 @@ public class CPUMainListener implements Listener {
                 data.getEmulator().setJmp(data.getEmulator().getInstructions().length+1);
             }
         }));
-        gui.setButton(13, new SimpleButton("§cProgrammiersprache ändern", Material.CLOCK, inventoryClickEvent -> {
+        gui.setButton(12, new SimpleButton("§cProgrammiersprache ändern", Material.CLOCK, inventoryClickEvent -> {
             ProgramBlockData data = programStore.getForBlock(event.getClickedBlock());
             if(data == null) {
                 return;
@@ -161,7 +163,7 @@ public class CPUMainListener implements Listener {
             }));
             programGUI.open(event.getPlayer());
         }));
-        gui.setButton(15, new SimpleButton("§aNeustarten \uD83D\uDD01", Material.GREEN_DYE, inventoryClickEvent -> {
+        gui.setButton(14, new SimpleButton("§aNeustarten \uD83D\uDD01", Material.GREEN_DYE, inventoryClickEvent -> {
             ProgramBlockData data = programStore.getForBlock(event.getClickedBlock());
             if(data == null) {
                 return;
@@ -173,6 +175,23 @@ public class CPUMainListener implements Listener {
 
                 data.getEmulator().setJmp(0);
             }
+        }));
+        gui.setButton(16, new SimpleButton("§6Hardware", Material.REDSTONE_LAMP, inventoryClickEvent -> {
+            SimpleGUI hwGUI = new SimpleGUI("§aHardware", 3);
+
+            ProgramBlockData fdata = programStore.getForBlock(event.getClickedBlock());
+
+            if(fdata == null) {
+                return;
+            }
+
+
+            hwGUI.setButton(13, new SimpleButton(InventoryUtil.createItem(Material.SCULK_SENSOR, "§6CPU-Kommunikation", "§aAktueller Kanal: "+fdata.getCommunicationChannel()), i2 -> {
+                event.getPlayer().closeInventory();
+                ScheCPUMinecraft.getInstance().getPromptManager().prompt(event.getPlayer(), fdata::setCommunicationChannel);
+            }));
+
+            hwGUI.open(event.getPlayer());
         }));
         gui.open(event.getPlayer());
     }
