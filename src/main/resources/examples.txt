@@ -10,3 +10,4 @@ Highlang Lib Redstone~/examples/highlang/example_redstone_lib.highlang
 Highlang Lib Redstone Loop~/examples/highlang/example_redstone_lib_loop.highlang
 Highlang Wireless Redstone Sender~/examples/highlang/wireless_redstone_sender.highlang
 Highlang Wireless Redstone Receiver~/examples/highlang/wireless_redstone_receiver.highlang
+Communication alive checker~/examples/highlang/comm_alive_checker.highlang
