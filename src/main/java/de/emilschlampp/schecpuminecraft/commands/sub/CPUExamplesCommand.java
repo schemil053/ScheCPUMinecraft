@@ -4,12 +4,14 @@ import de.emilschlampp.schecpuminecraft.commands.SubCommand;
 import de.emilschlampp.schecpuminecraft.schemilapi.inventory.ItemBuilder;
 import de.emilschlampp.schecpuminecraft.schemilapi.inventory.pager.Button;
 import de.emilschlampp.schecpuminecraft.schemilapi.inventory.pager.PagedPane;
+import de.emilschlampp.schecpuminecraft.util.StreamUtil;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -34,7 +36,7 @@ public class CPUExamplesCommand implements SubCommand {
                 String display = read.split("~", 2)[0];
                 String text = read.split("~", 2)[1];
 
-                String content = new String(getClass().getResourceAsStream(text).readAllBytes());
+                String content = new String(StreamUtil.readAllBytes(getClass().getResourceAsStream(text)));
 
                 List<String> pages = getBookContent(content);
 
@@ -61,7 +63,7 @@ public class CPUExamplesCommand implements SubCommand {
 
     @Override
     public List<String> tab(CommandSender sender, String[] args) {
-        return List.of();
+        return new ArrayList<>();
     }
 
     @Override

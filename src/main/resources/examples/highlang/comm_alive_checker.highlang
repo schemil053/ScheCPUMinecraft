@@ -1,0 +1,41 @@
+; Write your code here
+; Checks on port 161
+; if other cpu is down
+; it will output down
+
+;~define debug
+
+asm OUTW 3 1
+asm OUTW 140 1
+
+asm FUNC loop
+
+
+
+
+asm OUTW 161 0
+
+asm OUTW 4 500
+
+var v 0
+
+~ifdef debug
+var dbg "TICK"
+println dbg
+~endif
+
+
+in v 161
+
+ifbool v
+asm OUTW 141 0
+endif
+
+putnot v
+
+ifbool v
+asm OUTW 141 1
+endif
+
+
+asm JMP loop
