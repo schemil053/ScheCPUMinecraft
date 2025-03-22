@@ -19,6 +19,20 @@ public class ChannelStore {
         this.programStore = programStore;
     }
 
+    public ChannelData get(World world, String channel) {
+        if(!channelData.containsKey(world)) {
+            channelData.put(world, new HashMap<>());
+        }
+
+        Map<String, ChannelData> stringChannelDataMap = channelData.get(world);
+
+        if(!stringChannelDataMap.containsKey(channel)) {
+            stringChannelDataMap.put(channel, new ChannelData());
+        }
+
+        return stringChannelDataMap.get(channel);
+    }
+
     public void saveAll(World world) {
         if(!channelData.containsKey(world)) {
             return;

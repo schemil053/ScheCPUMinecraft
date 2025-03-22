@@ -3,6 +3,7 @@ package de.emilschlampp.schecpuminecraft.util;
 import de.emilschlampp.scheCPU.emulator.ProcessorEmulator;
 import de.emilschlampp.scheCPU.util.EmulatorSandboxRestrictions;
 import de.emilschlampp.scheCPU.util.FolderIOUtil;
+import de.emilschlampp.schecpuminecraft.ScheCPUMinecraft;
 import de.emilschlampp.schecpuminecraft.compiler.CPUCompiler;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -238,6 +239,15 @@ public class ProgramBlockData {
                     emulator.getIo()[value.getIOValueID()] = getLevel(location.getBlock().getRelative(value.toBlockFace()));
                 }
             }
+
+            if(!communicationChannel.isEmpty()) {
+                ChannelData channelData = ScheCPUMinecraft.getInstance().getProgramStore().getChannelStore().get(getLocation().getWorld(), communicationChannel);
+
+                int[] data = channelData.getData();
+                int[] io = emulator.getIo();
+
+                System.arraycopy(data, 0, io, 160, data.length);
+            }
         }
     }
 
@@ -297,6 +307,15 @@ public class ProgramBlockData {
             if (downWire == 3) {
                 setState(location.getBlock().getRelative(value.toBlockFace()), emulator.getIo()[value.getIOValueID()]);
             }
+        }
+
+        if(!communicationChannel.isEmpty()) {
+            ChannelData channelData = ScheCPUMinecraft.getInstance().getProgramStore().getChannelStore().get(getLocation().getWorld(), communicationChannel);
+
+            int[] data = channelData.getData();
+            int[] io = emulator.getIo();
+
+            System.arraycopy(io, 160, data, 0, data.length);
         }
     }
 

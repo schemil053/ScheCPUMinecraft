@@ -36,4 +36,8 @@ public class ChannelData {
             FolderIOUtil.writeInt(outputStream, datum);
         }
     }
+
+    public int[] getData() {
+        return data;
+    }
 }
