@@ -7,6 +7,7 @@ import de.emilschlampp.scheCPU.high.preprocessing.HighLangPreprocessor;
 import de.emilschlampp.scheCPU.high.preprocessing.PreprocessorEnvironment;
 import de.emilschlampp.scheCPU.high.processor.CompileContext;
 import de.emilschlampp.scheCPU.high.processor.CompileProcessor;
+import de.emilschlampp.scheCPU.util.OCompileProcessor;
 import de.emilschlampp.schecpuminecraft.util.CodeType;
 import de.emilschlampp.schecpuminecraft.util.IOFace;
 
@@ -36,7 +37,7 @@ public class CPUCompiler {
         return new Decompiler(code).decompile();
     }
 
-    private static class HighlangMCCompileProcessor extends CompileProcessor {
+    private static class HighlangMCCompileProcessor extends OCompileProcessor {
 
         @Override
         public void startCompile(CompileContext compileContext) {
@@ -45,19 +46,9 @@ public class CPUCompiler {
         }
 
         @Override
-        public String generatePreCompileHigh() {
-            return null;
-        }
-
-        @Override
-        public String generatePreCompileHighEnd() {
-            return null;
-        }
-
-        @Override
         public String generatePreCompileSCHESEM() {
-            return "OUTW 129 20\n"+
-                    "OUTW 128 1";
+            return "OUTW 129 20\n"+ // speed up, highlang is a bit slow (compared to schessem)
+                    "OUTW 128 1"; // enable speed up
         }
 
         @Override
@@ -76,11 +67,6 @@ public class CPUCompiler {
 
                 return "OUTWM "+face.getIOValueID()+" "+address;
             }
-            return null;
-        }
-
-        @Override
-        public String generateAfterCompileSCHESEM(CompileContext compileContext) {
             return null;
         }
     }
