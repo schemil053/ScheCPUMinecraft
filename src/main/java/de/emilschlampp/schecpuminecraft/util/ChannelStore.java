@@ -34,7 +34,13 @@ public class ChannelStore {
     }
 
     public void saveAll(World world) {
+        File worldsFolder = new File(APIHolder.folder, "worlds");
+        worldsFolder.mkdirs();
+
+        File fw = new File(worldsFolder, world.getName()+".channeldata");
+
         if(!channelData.containsKey(world)) {
+            fw.delete();
             return;
         }
         Set<String> data = programStore.getUsedChannels(world);
@@ -43,11 +49,11 @@ public class ChannelStore {
 
         write.entrySet().removeIf(a -> !data.contains(a.getKey()));
 
+        if(write.isEmpty()) {
+            fw.delete();
+            return;
+        }
 
-        File worldsFolder = new File(APIHolder.folder, "worlds");
-        worldsFolder.mkdirs();
-
-        File fw = new File(worldsFolder, world.getName()+".channeldata");
         try {
             FileOutputStream fos = new FileOutputStream(fw);
 
