@@ -58,6 +58,7 @@ public final class ScheCPUMinecraft extends JavaPlugin {
                 .register(new GetCPUBlockCommand())
                 .register(new GetCPUControlCommand())
                 .register(new ListCPUCommand())
+                .register(new SaveAllCommand())
         );
 
         getServer().getPluginManager().registerEvents(new CPUMainListener(), this);
