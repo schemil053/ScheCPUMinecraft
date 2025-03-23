@@ -54,6 +54,17 @@ public class ChannelStore {
             return;
         }
 
+        if(!fw.isFile()) {
+            try {
+                if(fw.getParentFile() != null) {
+                    fw.getParentFile().mkdirs();
+                }
+                fw.createNewFile();
+            } catch (IOException e) {
+
+            }
+        }
+
         try {
             FileOutputStream fos = new FileOutputStream(fw);
 

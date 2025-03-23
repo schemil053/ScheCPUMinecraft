@@ -92,6 +92,16 @@ public class ProgramBlockData {
         if (this.file == null) {
             return;
         }
+        if(!file.isFile()) {
+            try {
+                if(file.getParentFile() != null) {
+                    file.getParentFile().mkdirs();
+                }
+                file.createNewFile();
+            } catch (IOException ignored) {
+
+            }
+        }
         try (GZIPOutputStream outputStream = new GZIPOutputStream(new FileOutputStream(file))) {
             FolderIOUtil.writeInt(outputStream, VERSION);
             FolderIOUtil.writeBoolean(outputStream, this.source != null);
