@@ -42,6 +42,7 @@ public class ProgramStore {
         File worldFolder = new File(worldsFolder, world.getName());
 
         if(!prgStore.containsKey(world)) {
+            channelStore.saveAll(world);
             return;
         }
 
