@@ -5,6 +5,7 @@ import de.emilschlampp.scheCPU.util.EmulatorSandboxRestrictions;
 import de.emilschlampp.scheCPU.util.FolderIOUtil;
 import de.emilschlampp.schecpuminecraft.ScheCPUMinecraft;
 import de.emilschlampp.schecpuminecraft.compiler.CPUCompiler;
+import de.emilschlampp.schecpuminecraft.screen.ScheCPUScreen;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -27,6 +28,7 @@ public class ProgramBlockData {
     private String communicationChannel = "";
     private boolean forceLoaded = false;
     private CodeType codeType = CodeType.SCHESSEMBLER;
+    private ScheCPUScreen screen;
 
     public ProgramBlockData() {
     }
@@ -225,6 +227,9 @@ public class ProgramBlockData {
                 if (emulator.canExecute()) {
                     updateIOIn();
                     emulator.execute();
+                    if(screen != null) {
+                        screen.tick(emulator);
+                    }
                     updateIOOut();
                 }
             }
