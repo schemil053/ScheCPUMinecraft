@@ -314,7 +314,7 @@ public class CPUMainListener implements Listener {
 
 
     public static List<String> getBookContent(String src) {
-        int maxCharactersPerPage = 256;
+        //int maxCharactersPerPage = 256;
         List<String> pages = new ArrayList<>();
         StringBuilder current = new StringBuilder();
 
