@@ -5,7 +5,6 @@ import de.emilschlampp.schecpuminecraft.ScheCPUMinecraft;
 import de.emilschlampp.schecpuminecraft.schemilapi.util.ConfigUtil;
 import de.emilschlampp.schecpuminecraft.schemilapi.util.SConfig;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.InvalidConfigurationException;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,9 +14,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class HighLangLibraryManager implements ThrowingFunction<String, InputStream, IOException> {
-    @SuppressWarnings("ArraysAsListWithZeroOrOneArgument")
     private static final List<String> INTERNAL_LIBRARIES = Arrays.asList(
-            "redstone"
+            "redstone", "screen"
     );
 
     private boolean loaded;
