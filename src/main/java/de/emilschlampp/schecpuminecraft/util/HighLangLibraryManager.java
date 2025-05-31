@@ -29,7 +29,7 @@ public class HighLangLibraryManager implements ThrowingFunction<String, InputStr
 
     public void reload() {
         librariesList.clear();
-        SConfig config = ConfigUtil.getConfig("highlanglibs-remap");
+        SConfig config = ConfigUtil.getConfig("highlanglibs_remap");
         if(loaded) {
             try {
                 config.load(config.getFile());

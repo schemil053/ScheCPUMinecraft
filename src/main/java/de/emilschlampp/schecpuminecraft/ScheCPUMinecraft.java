@@ -52,7 +52,6 @@ public final class ScheCPUMinecraft extends JavaPlugin {
         }
 
         promptManager = new PromptManager();
-        langLibraryManager = new HighLangLibraryManager();
 
         getCommand("schecpu").setExecutor(new ScheCPUCommand()
                 .register(new CPUExamplesCommand())
@@ -69,6 +68,7 @@ public final class ScheCPUMinecraft extends JavaPlugin {
 
         new DebugTest(this);
 
+        langLibraryManager = new HighLangLibraryManager();
         programStore = new ProgramStore();
 
         for (World world : Bukkit.getWorlds()) {
