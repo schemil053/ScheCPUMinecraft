@@ -44,7 +44,7 @@ public class HighLangLibraryManager implements ThrowingFunction<String, InputStr
         }
 
         for (String key : config.getKeys(false)) {
-            if(!config.isConfigurationSection(key)) {
+            if(config.isConfigurationSection(key)) {
                 ConfigurationSection configurationSection = config.getConfigurationSection(key);
 
                 if(configurationSection != null) {
@@ -52,6 +52,8 @@ public class HighLangLibraryManager implements ThrowingFunction<String, InputStr
                         File file = new File(ScheCPUMinecraft.getInstance().getDataFolder(), configurationSection.getString("file", ""));
                         if (file.isFile()) {
                             librariesList.put(configurationSection.getString("name", key), file);
+                        } else {
+                            ScheCPUMinecraft.getInstance().getLogger().warning("Could not find library "+key+"! (File "+file.getAbsolutePath()+")");
                         }
                     }
                 }
