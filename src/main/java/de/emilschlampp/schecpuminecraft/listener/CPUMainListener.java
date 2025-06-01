@@ -24,7 +24,9 @@ import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.MapMeta;
 
 import java.awt.image.BufferedImage;
 import java.util.*;
@@ -196,6 +198,15 @@ public class CPUMainListener implements Listener {
             hwGUI.setButton(15, new SimpleButton(InventoryUtil.createItem(Material.MAP, "§6Bildschirm verbinden §7(§eBETA§7)", "§aVerbinden einen Bildschirm"), i2 -> {
                 event.getPlayer().closeInventory();
                 fdata.setScreen(new ScheCPUScreen(128, 128, BufferedImage.TYPE_INT_RGB));
+
+                if(event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) { //TODO 01.06.2025 Better, add an item?
+                    ItemStack itemStack = new ItemStack(Material.FILLED_MAP);
+                    MapMeta meta = (MapMeta) itemStack.getItemMeta();
+                    meta.setMapId(programStore.getMapManager().get(fdata.getLocation().getWorld(), fdata.getLocation())); //TODO 01.06.2025 find a better way of doing this
+                    itemStack.setItemMeta(meta);
+
+                    event.getPlayer().getInventory().addItem(itemStack);
+                }
             }));
 
             hwGUI.open(event.getPlayer());
