@@ -6,6 +6,7 @@ import de.emilschlampp.schecpuminecraft.schemilapi.inventory.InventoryUtil;
 import de.emilschlampp.schecpuminecraft.schemilapi.inventory.ItemBuilder;
 import de.emilschlampp.schecpuminecraft.schemilapi.inventory.simpleGUI.SimpleButton;
 import de.emilschlampp.schecpuminecraft.schemilapi.inventory.simpleGUI.SimpleGUI;
+import de.emilschlampp.schecpuminecraft.screen.ScheCPUScreen;
 import de.emilschlampp.schecpuminecraft.util.CodeType;
 import de.emilschlampp.schecpuminecraft.util.IOFace;
 import de.emilschlampp.schecpuminecraft.util.ProgramBlockData;
@@ -25,6 +26,7 @@ import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.meta.BookMeta;
 
+import java.awt.image.BufferedImage;
 import java.util.*;
 
 public class CPUMainListener implements Listener {
@@ -186,9 +188,14 @@ public class CPUMainListener implements Listener {
             }
 
 
-            hwGUI.setButton(13, new SimpleButton(InventoryUtil.createItem(Material.REPEATER, "§6CPU-Kommunikation", "§aAktueller Kanal: "+fdata.getCommunicationChannel()), i2 -> {
+            hwGUI.setButton(11, new SimpleButton(InventoryUtil.createItem(Material.REPEATER, "§6CPU-Kommunikation", "§aAktueller Kanal: "+fdata.getCommunicationChannel()), i2 -> {
                 event.getPlayer().closeInventory();
                 ScheCPUMinecraft.getInstance().getPromptManager().prompt(event.getPlayer(), fdata::setCommunicationChannel);
+            }));
+
+            hwGUI.setButton(15, new SimpleButton(InventoryUtil.createItem(Material.MAP, "§6Bildschirm verbinden §7(§eBETA§7)", "§aVerbinden einen Bildschirm"), i2 -> {
+                event.getPlayer().closeInventory();
+                fdata.setScreen(new ScheCPUScreen(128, 128, BufferedImage.TYPE_INT_RGB));
             }));
 
             hwGUI.open(event.getPlayer());
