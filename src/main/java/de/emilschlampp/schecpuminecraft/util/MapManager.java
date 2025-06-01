@@ -80,7 +80,7 @@ public class MapManager {
         File worldsFolder = new File(APIHolder.folder, "worlds");
         worldsFolder.mkdirs();
 
-        File fw = new File(worldsFolder, world.getName()+".channeldata");
+        File fw = new File(worldsFolder, world.getName()+".mapdata");
 
         if(!mapData.containsKey(world)) {
             fw.delete();
@@ -134,7 +134,7 @@ public class MapManager {
         HashMap<String, Integer> value = new HashMap<>();
         mapData.put(world, value);
 
-        File fw = new File(worldsFolder, world.getName()+".channeldata");
+        File fw = new File(worldsFolder, world.getName()+".mapdata");
 
         if(!fw.isFile()) {
             return;
