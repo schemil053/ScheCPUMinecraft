@@ -92,8 +92,6 @@ public class ScheCPUScreen {
                         io[widthArgPort],
                         io[heightArgPort]
                 );
-
-                Bukkit.broadcastMessage("FILLR: "+io[xArgPort]+";"+io[yArgPort]+";"+io[widthArgPort]+";"+io[heightArgPort]);
             }
             if(io[instructionPort] == 3) { // Draw rect
                 graphics2D.drawRect(

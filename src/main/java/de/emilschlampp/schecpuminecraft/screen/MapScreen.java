@@ -5,8 +5,6 @@ import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapRenderer;
 import org.bukkit.map.MapView;
 
-import java.awt.*;
-
 public class MapScreen extends MapRenderer {
     private ScheCPUScreen screen;
 
