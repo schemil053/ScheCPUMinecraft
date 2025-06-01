@@ -1,0 +1,21 @@
+package de.emilschlampp.schecpuminecraft.screen;
+
+import org.bukkit.entity.Player;
+import org.bukkit.map.MapCanvas;
+import org.bukkit.map.MapRenderer;
+import org.bukkit.map.MapView;
+
+public class MapScreen extends MapRenderer {
+    private ScheCPUScreen screen;
+
+    public MapScreen(ScheCPUScreen screen) {
+        this.screen = screen;
+    }
+
+    @Override
+    public void render(MapView map, MapCanvas canvas, Player player) {
+        if(screen != null) {
+            canvas.drawImage(0, 0, screen.getImage());
+        }
+    }
+}

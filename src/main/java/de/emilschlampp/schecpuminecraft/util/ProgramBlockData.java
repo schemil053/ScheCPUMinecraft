@@ -38,7 +38,7 @@ public class ProgramBlockData {
         try(GZIPInputStream inputStream = new GZIPInputStream(new FileInputStream(file))) {
             int version = FolderIOUtil.readInt(inputStream);
 
-            if(version == 1 || version == 2) {
+            if(version == 1 || version == 2 || version == 3) {
                 if (FolderIOUtil.readBoolean(inputStream)) {
                     this.source = new String(FolderIOUtil.readByteArray(inputStream), StandardCharsets.UTF_8);
                 }
@@ -79,10 +79,16 @@ public class ProgramBlockData {
                     this.codeType = CodeType.valueOf(FolderIOUtil.readString(inputStream));
                 }
 
-                if(version == 2) {
+                if(version == 2 || version == 3) {
                     communicationChannel = FolderIOUtil.readString(inputStream);
                 } else {
                     communicationChannel = "";
+                }
+
+                if(version == 3) {
+                    if(FolderIOUtil.readBoolean(inputStream)) {
+                        screen = new ScheCPUScreen(inputStream);
+                    }
                 }
             }
         } catch (Throwable throwable) {
@@ -152,6 +158,11 @@ public class ProgramBlockData {
             }
 
             FolderIOUtil.writeString(outputStream, communicationChannel);
+
+            FolderIOUtil.writeBoolean(outputStream, screen != null);
+            if(screen != null) {
+                screen.write(outputStream);
+            }
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
@@ -376,6 +387,16 @@ public class ProgramBlockData {
 
     public ProgramBlockData setCommunicationChannel(String communicationChannel) {
         this.communicationChannel = communicationChannel;
+        return this;
+    }
+
+    public ScheCPUScreen getScreen() {
+        return screen;
+    }
+
+    public ProgramBlockData setScreen(ScheCPUScreen screen) {
+        this.screen = screen;
+        ScheCPUMinecraft.getInstance().getProgramStore().getMapManager().register(getLocation().getWorld(), getLocation().getBlockX()+";"+getLocation().getBlockY()+";"+getLocation().getBlockZ());
         return this;
     }
 }

@@ -2,8 +2,12 @@ package de.emilschlampp.schecpuminecraft.screen;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import de.emilschlampp.scheCPU.emulator.ProcessorEmulator;
+import de.emilschlampp.scheCPU.util.FolderIOUtil;
 
 public class ScheCPUScreen {
     private int instructionPort = 130;
@@ -23,6 +27,36 @@ public class ScheCPUScreen {
         this.image = new BufferedImage(width, height, colour);
         this.graphics2D = this.image.createGraphics();
         this.graphics2D.setFont(this.graphics2D.getFont().deriveFont(12f));
+    }
+
+    public ScheCPUScreen(InputStream inputStream) throws IOException {
+        image = new BufferedImage(
+                FolderIOUtil.readInt(inputStream),
+                FolderIOUtil.readInt(inputStream),
+                FolderIOUtil.readInt(inputStream)
+        );
+        for (int x = 0; x < image.getWidth(); x++) {
+            for (int y = 0; y < image.getHeight(); y++) {
+                image.setRGB(x, y, FolderIOUtil.readInt(inputStream));
+            }
+        }
+        textBuffer = FolderIOUtil.readString(inputStream);
+        this.graphics2D = this.image.createGraphics();
+        this.graphics2D.setFont(this.graphics2D.getFont().deriveFont(12f));
+    }
+
+    public void write(OutputStream outputStream) throws IOException {
+        FolderIOUtil.writeInt(outputStream, image.getWidth());
+        FolderIOUtil.writeInt(outputStream, image.getHeight());
+        FolderIOUtil.writeInt(outputStream, image.getType());
+
+        for (int x = 0; x < image.getWidth(); x++) {
+            for (int y = 0; y < image.getHeight(); y++) {
+                FolderIOUtil.writeInt(outputStream, image.getRGB(x, y));
+            }
+        }
+
+        FolderIOUtil.writeString(outputStream, textBuffer);
     }
 
     public void tick(ProcessorEmulator emulator) {
@@ -73,7 +107,6 @@ public class ScheCPUScreen {
                 graphics2D.drawString(textBuffer, io[xArgPort], io[yArgPort]);
             }
         }
-
     }
 
     public int getInstructionPort() {
