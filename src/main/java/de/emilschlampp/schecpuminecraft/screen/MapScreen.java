@@ -17,7 +17,6 @@ public class MapScreen extends MapRenderer {
     @Override
     public void render(MapView map, MapCanvas canvas, Player player) {
         if(screen != null) {
-            player.sendMessage(screen.toString());
             canvas.drawImage(0, 0, screen.getImage());
         }
     }

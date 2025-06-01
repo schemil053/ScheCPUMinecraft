@@ -8,16 +8,17 @@ import java.io.OutputStream;
 
 import de.emilschlampp.scheCPU.emulator.ProcessorEmulator;
 import de.emilschlampp.scheCPU.util.FolderIOUtil;
+import org.bukkit.Bukkit;
 
 public class ScheCPUScreen {
-    private int instructionPort = 130;
-    private int colourArgPort = 131;
-    private int xArgPort = 132;
-    private int yArgPort = 133;
-    private int widthArgPort = 134;
-    private int heightArgPort = 135;
-    private int triggerPort = 136;
-    private int textBufferPort = 137;
+    private int instructionPort = 180;
+    private int colourArgPort = 181;
+    private int xArgPort = 182;
+    private int yArgPort = 183;
+    private int widthArgPort = 184;
+    private int heightArgPort = 185;
+    private int triggerPort = 186;
+    private int textBufferPort = 187;
 
     private final BufferedImage image;
     private final Graphics2D graphics2D;
@@ -91,6 +92,8 @@ public class ScheCPUScreen {
                         io[widthArgPort],
                         io[heightArgPort]
                 );
+
+                Bukkit.broadcastMessage("FILLR: "+io[xArgPort]+";"+io[yArgPort]+";"+io[widthArgPort]+";"+io[heightArgPort]);
             }
             if(io[instructionPort] == 3) { // Draw rect
                 graphics2D.drawRect(

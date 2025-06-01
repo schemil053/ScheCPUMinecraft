@@ -11,47 +11,47 @@ reserve trig 1
 var trig 1
 
 method drawRect
-out x 132
-out y 133
-out width 134
-out height 135
+out x 182
+out y 183
+out width 184
+out height 185
 var tmp_action 3
-out tmp_action 130
-out trig 136
+out tmp_action 180
+out trig 186
 endmethod
 
 method fillRect
-out x 132
-out y 133
-out width 134
-out height 135
+out x 182
+out y 183
+out width 184
+out height 185
 var tmp_action 2
-out tmp_action 130
-out trig 136
+out tmp_action 180
+out trig 186
 endmethod
 
 method setColorSelected
-out color 131
+out color 181
 var tmp_action 1
-out tmp_action 130
-out trig 136
+out tmp_action 180
+out trig 186
 endmethod
 
 method setColorRaw
-out color 131
+out color 181
 var tmp_action 0
-out tmp_action 130
-out trig 136
+out tmp_action 180
+out trig 186
 endmethod
 
 method drawString
-out x 132
-out y 133
+out x 182
+out y 183
 var tmp_action 5
-out tmp_action 130
-out trig 136
-writestring 137 text
+out tmp_action 180
+out trig 186
+writestring 187 text
 var tmp_action 6
-out tmp_action 130
-out trig 136
+out tmp_action 180
+out trig 186
 endmethod
