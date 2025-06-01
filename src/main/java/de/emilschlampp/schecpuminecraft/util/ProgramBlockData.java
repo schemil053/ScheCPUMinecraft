@@ -18,7 +18,7 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 public class ProgramBlockData {
-    public static final int VERSION = 2;
+    public static final int VERSION = 3;
     private String source;
     private byte[] compiled;
     private Location location;
