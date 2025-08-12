@@ -14,6 +14,7 @@ import java.util.Set;
 public class ProgramStore {
     private final Map<World, Map<Location, ProgramBlockData>> prgStore = new HashMap<>();
     private final ChannelStore channelStore = new ChannelStore(this);
+    private final MapManager mapManager = new MapManager(this);
 
     public void deleteCPU(Block block) {
         prgStore.getOrDefault(block.getWorld(), new HashMap<>()).remove(block.getLocation());
@@ -43,6 +44,7 @@ public class ProgramStore {
 
         if(!prgStore.containsKey(world)) {
             channelStore.saveAll(world);
+            mapManager.saveAll(world);
             return;
         }
 
@@ -56,6 +58,7 @@ public class ProgramStore {
         }));
 
         channelStore.saveAll(world);
+        mapManager.saveAll(world);
     }
 
     public Set<String> getUsedChannels(World world) {
@@ -68,6 +71,34 @@ public class ProgramStore {
             strings.add(value.getCommunicationChannel());
         }
         return strings;
+    }
+
+    public Set<String> getUsedBlocks(World world) {
+        Map<Location, ProgramBlockData> locationProgramBlockDataMap = prgStore.get(world);
+        if(locationProgramBlockDataMap == null) {
+            return new HashSet<>();
+        }
+        HashSet<String> strings = new HashSet<>();
+        for (ProgramBlockData value : locationProgramBlockDataMap.values()) {
+            Location location = value.getLocation();
+            strings.add(location.getBlockX()+";"+location.getBlockY()+";"+location.getBlockZ());
+        }
+        return strings;
+    }
+
+    public ProgramBlockData getByLocationString(World world, String s) {
+        Map<Location, ProgramBlockData> locationProgramBlockDataMap = prgStore.get(world);
+        if(locationProgramBlockDataMap == null) {
+            return null;
+        }
+        for (Map.Entry<Location, ProgramBlockData> locationProgramBlockDataEntry : locationProgramBlockDataMap.entrySet()) {
+            Location key = locationProgramBlockDataEntry.getKey();
+            if((key.getBlockX()+";"+key.getBlockY()+";"+key.getBlockZ()).equals(s)) {
+                return locationProgramBlockDataEntry.getValue();
+            }
+        }
+
+        return null;
     }
 
     public void load(World world) {
@@ -110,6 +141,8 @@ public class ProgramStore {
         }
 
         channelStore.load(world);
+        mapManager.load(world);
+        mapManager.registerMaps(world);
     }
 
     public Map<World, Map<Location, ProgramBlockData>> getPrgStore() {
@@ -123,5 +156,9 @@ public class ProgramStore {
 
     public ChannelStore getChannelStore() {
         return channelStore;
+    }
+
+    public MapManager getMapManager() {
+        return mapManager;
     }
 }

@@ -19,6 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class ScheCPUMinecraft extends JavaPlugin {
     private static ScheCPUMinecraft instance;
 
+    private HighLangLibraryManager langLibraryManager;
     private ProgramStore programStore;
     private PromptManager promptManager;
 
@@ -57,7 +58,9 @@ public final class ScheCPUMinecraft extends JavaPlugin {
                 .register(new GetCodingBookCommand())
                 .register(new GetCPUBlockCommand())
                 .register(new GetCPUControlCommand())
+                .register(new LibraryCommand())
                 .register(new ListCPUCommand())
+                .register(new SaveAllCommand())
         );
 
         getServer().getPluginManager().registerEvents(new CPUMainListener(), this);
@@ -65,6 +68,7 @@ public final class ScheCPUMinecraft extends JavaPlugin {
 
         new DebugTest(this);
 
+        langLibraryManager = new HighLangLibraryManager();
         programStore = new ProgramStore();
 
         for (World world : Bukkit.getWorlds()) {
@@ -85,6 +89,10 @@ public final class ScheCPUMinecraft extends JavaPlugin {
         for (World world : Bukkit.getWorlds()) {
             programStore.saveAll(world);
         }
+    }
+
+    public HighLangLibraryManager getLangLibraryManager() {
+        return langLibraryManager;
     }
 
     public ProgramStore getProgramStore() {

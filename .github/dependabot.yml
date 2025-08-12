@@ -12,7 +12,9 @@ updates:
     ignore:
       # ignore Maven APIs/SPIs
       - dependency-name: org.spigotmc:*
+    target-branch: main
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "daily"
+    target-branch: main

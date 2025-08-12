@@ -6,6 +6,7 @@ import de.emilschlampp.schecpuminecraft.schemilapi.inventory.InventoryUtil;
 import de.emilschlampp.schecpuminecraft.schemilapi.inventory.ItemBuilder;
 import de.emilschlampp.schecpuminecraft.schemilapi.inventory.simpleGUI.SimpleButton;
 import de.emilschlampp.schecpuminecraft.schemilapi.inventory.simpleGUI.SimpleGUI;
+import de.emilschlampp.schecpuminecraft.screen.ScheCPUScreen;
 import de.emilschlampp.schecpuminecraft.util.CodeType;
 import de.emilschlampp.schecpuminecraft.util.IOFace;
 import de.emilschlampp.schecpuminecraft.util.ProgramBlockData;
@@ -23,8 +24,11 @@ import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.MapMeta;
 
+import java.awt.image.BufferedImage;
 import java.util.*;
 
 public class CPUMainListener implements Listener {
@@ -186,9 +190,23 @@ public class CPUMainListener implements Listener {
             }
 
 
-            hwGUI.setButton(13, new SimpleButton(InventoryUtil.createItem(Material.REPEATER, "§6CPU-Kommunikation", "§aAktueller Kanal: "+fdata.getCommunicationChannel()), i2 -> {
+            hwGUI.setButton(11, new SimpleButton(InventoryUtil.createItem(Material.REPEATER, "§6CPU-Kommunikation", "§aAktueller Kanal: "+fdata.getCommunicationChannel()), i2 -> {
                 event.getPlayer().closeInventory();
                 ScheCPUMinecraft.getInstance().getPromptManager().prompt(event.getPlayer(), fdata::setCommunicationChannel);
+            }));
+
+            hwGUI.setButton(15, new SimpleButton(InventoryUtil.createItem(Material.MAP, "§6Bildschirm verbinden §7(§eBETA§7)", "§aVerbinden einen Bildschirm"), i2 -> {
+                event.getPlayer().closeInventory();
+                fdata.setScreen(new ScheCPUScreen(128, 128, BufferedImage.TYPE_INT_RGB));
+
+                if(event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) { //TODO 01.06.2025 Better, add an item?
+                    ItemStack itemStack = new ItemStack(Material.FILLED_MAP);
+                    MapMeta meta = (MapMeta) itemStack.getItemMeta();
+                    meta.setMapId(programStore.getMapManager().get(fdata.getLocation().getWorld(), fdata.getLocation())); //TODO 01.06.2025 find a better way of doing this
+                    itemStack.setItemMeta(meta);
+
+                    event.getPlayer().getInventory().addItem(itemStack);
+                }
             }));
 
             hwGUI.open(event.getPlayer());
@@ -314,7 +332,7 @@ public class CPUMainListener implements Listener {
 
 
     public static List<String> getBookContent(String src) {
-        int maxCharactersPerPage = 256;
+        //int maxCharactersPerPage = 256;
         List<String> pages = new ArrayList<>();
         StringBuilder current = new StringBuilder();
 
