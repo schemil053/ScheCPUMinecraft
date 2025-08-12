@@ -74,7 +74,7 @@
         <dependency>
             <groupId>com.github.schemil053</groupId>
             <artifactId>ScheCPUEmulator</artifactId>
-            <version>023042e791</version>
+            <version>4406c4d569</version>
         </dependency>
 
         <!-- junit 5, unit test -->
